@@ -1,6 +1,6 @@
 
 
-function Product( { image, title, counter, setCounter, children }) {
+function Fruitcounter( { image, title, counter, setCounter, children }) {
     return (
         <article className="fruit">
             <h2>{title}</h2>
@@ -14,4 +14,4 @@ function Product( { image, title, counter, setCounter, children }) {
 }
 
 
-export default Product;
+export default Fruitcounter;

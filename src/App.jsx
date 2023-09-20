@@ -2,8 +2,10 @@ import './App.css'
 import Fruit from "./components/Fruitcounter.jsx";
 import image from "./assets/react-aardbei.jpeg";
 import {useState} from "react";
+import {useForm} from 'react-hook-form';
 import Fruitcounter from "./components/Fruitcounter.jsx";
 import Button from "./components/Button.jsx";
+
 
 
 function App() {
@@ -41,10 +43,13 @@ function App() {
         });
     }
 
-    function handleSubmit(e) {
-        e.preventDefault()
+    function handleFormSubmit(data) {
+        // e.preventDefault()
+        console.log(data)
         console.log(formState)
     }
+
+    const { register, formState: { errors }, handleSubmit } = useForm();
 
     return (
         <>
@@ -85,47 +90,96 @@ function App() {
             </section>
 
             <section className="formbox">
-                <form onSubmit={handleSubmit}>
-                    <label>
+                <form onSubmit={handleSubmit(handleFormSubmit)}>
+                    <label htmlFor="first-name-field">
                         First name:
                         <input
                             type="text"
                             name="firstName"
+                            {...register("first-name", {
+                                required: true,
+                                minlength: 1,
+                                maxLength: 12,
+                            })}
                             value={formState.firstName}
                             onChange={handleChange}/>
+                        {errors['first-name'] && <p>{errors['first-name.message']}</p>}
                     </label>
                     <br/>
-                    <label>
+                    <label htmlFor="last-name-field">
                         Last name:
                         <input
                             type="text"
                             name="lastName"
+                            {...register("last-name", {
+
+                                required: {
+                                    value: true,
+                                    message: 'Dit veld is verplicht',
+                                },
+                                minLength: {
+                                    value: 2,
+                                    message: 'Input moet minstens 2 karakters bevatten',
+                                },
+                                maxLength: {
+                                    value: 12,
+                                    message: 'Input mag maximaaal 12 karakters bevatten',
+                                },
+                            })}
                             value={formState.lastName}
                             onChange={handleChange}/>
+                        {errors['last-name'] && <p>{errors['last-name.message']}</p>}
                     </label>
                     <br/>
-                    <label>
+                    <label htmlFor="age-field">
                         Leeftijd:
                         <input
                             type="number"
                             name="age"
+                            {...register("age", {
+                                required: {
+                                    value: true,
+                                    message: 'Dit veld is verplicht',
+                                },
+                                min: {
+                                    value: 1,
+                                    message: 'Input moet minstens 1 karakter bevatten',
+                                },
+                                max: {
+                                    value: 3,
+                                    message: 'Input mag maximaal 3 karakters bevatten',
+                                },
+                            })}
                             value={formState.age}
                             onChange={handleChange}/>
                     </label>
                     <br/>
-                    <label>
+                    <label htmlFor="zipcode-field">
                         Postcode:
                         <input
                             type="text"
                             name="zipCode"
+                            {...register("zipcode", {
+                                required: {
+                                    value: true,
+                                    message: 'Dit veld is verplicht',
+                                },
+                               // pattern:
+                            })}
                             value={formState.zipCode}
                             onChange={handleChange}/>
                     </label>
                     <br/>
-                    <label>
+                    <label htmlFor="delivery-frequency-field">
                         Bezorgfrequentie:
                         <select
                             name="deliveryFrequency"
+                            {...register("deliveryFrequency", {
+                                required: {
+                                    value: true,
+                                    message: 'Dit veld is verplicht',
+                                },
+                            })}
                             value={formState.deliveryFrequency}
                             onChange={handleChange}
                         >
@@ -137,10 +191,13 @@ function App() {
                     <br/>
 
                     <br/>
-                    <label>
+                    <label htmlFor="timeslot-field">
                         <input
                             type="radio"
                             name="timeslot"
+                            {...register("timeslot", {
+                                required: true,
+                            })}
                             value="day"
                             checked={formState.timeslot === "day"}
                             onChange={handleChange}
@@ -149,6 +206,9 @@ function App() {
                         <input
                             type="radio"
                             name="timeslot"
+                            {...register("timeslot", {
+                                required: true,
+                            })}
                             value="night"
                             checked={formState.timeslot === "night"}
                             onChange={handleChange}
@@ -156,20 +216,27 @@ function App() {
                         's Nachts
                     </label>
                     <br/>
-                    <label>
+                    <label htmlFor="comment-field">
                         Opmerking
                         <input
                             type="text-area"
                             id="comment"
                             name="comment"
+                            {...register("comment")}
                         />
                     </label>
                     <br/>
                     <br/>
-                    <label>
+                    <label htmlFor="agreeTerms-field">
                         <input
                             type="checkbox"
                             name="agreeTerms"
+                            {...register("agreeTerms", {
+                                required: {
+                                    value: true,
+                                    message: 'Dit veld is verplicht',
+                                }
+                            })}
                             checked={formState.agreeTerms}
                             onChange={handleChange}
                         />
